@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Noah_Blake_Mission_6.Models;
 
 namespace Noah_Blake_Mission_6.Controllers;
@@ -26,6 +28,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AddMovie()
     {
+        PopulateCategories();
         return View(new Movie());
     }
 
@@ -35,6 +38,7 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
+            PopulateCategories(movie.CategoryId);
             return View(movie);
         }
 
@@ -42,6 +46,29 @@ public class HomeController : Controller
         _context.SaveChanges();
 
         return RedirectToAction("Confirmation");
+    }
+
+    public IActionResult MovieList()
+    {
+        var movies = _context.Movies
+            .Include(m => m.Category)
+            .OrderBy(m => m.Title)
+            .ThenBy(m => m.Year)
+            .ToList();
+
+        return View(movies);
+    }
+
+    private void PopulateCategories(int? selectedCategoryId = null)
+    {
+        ViewBag.Categories = new SelectList(
+            _context.Categories
+                .OrderBy(c => c.CategoryName)
+                .ToList(),
+            nameof(Category.CategoryId),
+            nameof(Category.CategoryName),
+            selectedCategoryId
+        );
     }
 
     public IActionResult Confirmation()
