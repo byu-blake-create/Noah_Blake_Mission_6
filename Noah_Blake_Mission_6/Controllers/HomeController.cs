@@ -59,6 +59,49 @@ public class HomeController : Controller
         return View(movies);
     }
 
+    [HttpGet]
+    public IActionResult EditMovie(int id)
+    {
+        var movie = _context.Movies.FirstOrDefault(m => m.MovieId == id);
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        PopulateCategories(movie.CategoryId);
+        return View(movie);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditMovie(Movie movie)
+    {
+        if (!ModelState.IsValid)
+        {
+            PopulateCategories(movie.CategoryId);
+            return View(movie);
+        }
+
+        var existingMovie = _context.Movies.FirstOrDefault(m => m.MovieId == movie.MovieId);
+        if (existingMovie == null)
+        {
+            return NotFound();
+        }
+
+        existingMovie.CategoryId = movie.CategoryId;
+        existingMovie.Title = movie.Title;
+        existingMovie.Year = movie.Year;
+        existingMovie.Director = movie.Director;
+        existingMovie.Rating = movie.Rating;
+        existingMovie.Edited = movie.Edited;
+        existingMovie.CopiedToPlex = movie.CopiedToPlex;
+        existingMovie.LentTo = movie.LentTo;
+        existingMovie.Notes = movie.Notes;
+
+        _context.SaveChanges();
+        return RedirectToAction(nameof(MovieList));
+    }
+
     private void PopulateCategories(int? selectedCategoryId = null)
     {
         ViewBag.Categories = new SelectList(
