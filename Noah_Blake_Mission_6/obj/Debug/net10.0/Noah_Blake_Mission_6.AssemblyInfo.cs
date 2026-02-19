@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Noah_Blake_Mission_6")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9848d0abced79b033ab56f9a019dc6beb09e9f8f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56ea5af948742296150b09a04a6c279e815a5c69")]
 [assembly: System.Reflection.AssemblyProductAttribute("Noah_Blake_Mission_6")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Noah_Blake_Mission_6")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

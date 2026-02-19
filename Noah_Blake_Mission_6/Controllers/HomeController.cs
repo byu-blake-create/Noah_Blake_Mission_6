@@ -102,6 +102,37 @@ public class HomeController : Controller
         return RedirectToAction(nameof(MovieList));
     }
 
+    [HttpGet]
+    public IActionResult DeleteMovie(int id)
+    {
+        var movie = _context.Movies
+            .Include(m => m.Category)
+            .FirstOrDefault(m => m.MovieId == id);
+
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        return View(movie);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteMovieConfirmed(int movieId)
+    {
+        var movie = _context.Movies.FirstOrDefault(m => m.MovieId == movieId);
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        _context.Movies.Remove(movie);
+        _context.SaveChanges();
+
+        return RedirectToAction(nameof(MovieList));
+    }
+
     private void PopulateCategories(int? selectedCategoryId = null)
     {
         ViewBag.Categories = new SelectList(
