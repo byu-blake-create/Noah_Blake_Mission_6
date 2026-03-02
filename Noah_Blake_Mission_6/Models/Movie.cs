@@ -23,10 +23,10 @@ public class Movie
     public string? Rating { get; set; }
 
     [Required]
-    public bool Edited { get; set; }
+    public bool? Edited { get; set; }
 
     [Required]
-    public bool CopiedToPlex { get; set; }
+    public bool? CopiedToPlex { get; set; }
 
     public string? LentTo { get; set; }
 
