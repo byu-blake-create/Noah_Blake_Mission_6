@@ -1,0 +1,54 @@
+@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "Movie List";
+}
+
+<h1 class="mb-3">Movie Collection</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>Category</th>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Director</th>
+            <th>Rating</th>
+            <th>Edited</th>
+            <th>Copied To Plex</th>
+            @* <th>Lent To</th> *@
+            @* <th>Notes</th> *@
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="10" class="text-center">No movies found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@(movie.Category?.CategoryName ?? "-")</td>
+                    <td>@movie.Title</td>
+                    <td>@movie.Year</td>
+                    <td>@movie.Director</td>
+                    <td>@movie.Rating</td>
+                    <td>@(movie.Edited == true ? "Yes" : "No")</td>
+                    <td>@(movie.CopiedToPlex == true ? "Yes" : "No")</td>
+                    @* <td>@(string.IsNullOrWhiteSpace(movie.LentTo) ? "-" : movie.LentTo)</td> *@
+                    @* <td>@(string.IsNullOrWhiteSpace(movie.Notes) ? "-" : movie.Notes)</td> *@
+                    <td>
+                        <a asp-action="EditMovie" asp-route-id="@movie.MovieId" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a asp-action="DeleteMovie" asp-route-id="@movie.MovieId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
